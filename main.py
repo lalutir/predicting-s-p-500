@@ -9,6 +9,9 @@ from modelling import *
 from visualizing import *
 from predicting import *
 
+import warnings
+warnings.filterwarnings('ignore')
+
 
 ### LOADING API KEY
 #api_key = load_api_key()['API_KEY']
