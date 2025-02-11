@@ -5,6 +5,9 @@ on:
     - cron: '0 6 * * *'  # Runs at 06:00 UTC (08:00 CEST)  
   workflow_dispatch:  # Allows manual execution  
 
+permissions:
+  contents: write
+
 jobs:  
   run-script:  
     runs-on: ubuntu-latest  
