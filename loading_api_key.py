@@ -14,3 +14,6 @@ def load_api_key():
             key, value = line.strip().split('=')
             keys[key] = value
         return keys
+
+def load_api_key_github_aactions():
+    return os.getenv("API_KEY")
