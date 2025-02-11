@@ -11,7 +11,8 @@ from predicting import *
 
 
 ### LOADING API KEY
-api_key = load_api_key()['API_KEY']
+#api_key = load_api_key()['API_KEY']
+api_key = load_api_key_github_actions()
 
 
 ### LOADING S&P500 DATA
