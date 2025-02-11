@@ -1,0 +1,10 @@
+pandas
+numpy
+matplotlib
+seaborn
+requests
+os
+datetime
+prophet
+selenium
+webdriver_manager
