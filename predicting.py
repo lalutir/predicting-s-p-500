@@ -39,7 +39,7 @@ def compare_predictions_to_actual(actual_df, predicted_df, timestamp, timestamp_
         predicted_new.to_csv(f'Datasets/{prediction_file_path}', index=False)
         predicted = predicted_new
         
-    accuracy = pd.read_csv(error_file_path)
+    accuracy = pd.read_csv(f'Datasets/{error_file_path}')
     accuracy['ds'] = pd.to_datetime(accuracy['ds'])
     
     if accuracy[accuracy['ds'] == timestamp_historic].empty:
