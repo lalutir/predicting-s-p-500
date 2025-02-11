@@ -15,5 +15,5 @@ def load_api_key():
             keys[key] = value
         return keys
 
-def load_api_key_github_aactions():
+def load_api_key_github_actions():
     return os.getenv("API_KEY")
