@@ -1,0 +1,38 @@
+name: Run main.py Daily  
+
+on:  
+  schedule:  
+    - cron: '0 6* * *'  # Runs at 06:00 UTC (08:00 CEST)  
+  workflow_dispatch:  # Allows manual execution  
+
+jobs:  
+  run-script:  
+    runs-on: ubuntu-latest  
+    steps:  
+      - name: Checkout Repository  
+        uses: actions/checkout@v4  
+
+      - name: Set Up Python  
+        uses: actions/setup-python@v5  
+        with:  
+          python-version: '3.11'  
+
+      - name: Install Dependencies  
+        run: |  
+          pip install -r requirements.txt  
+
+      - name: Run Script  
+        run: python main.py  
+
+      - name: Send Email  
+        uses: dawidd6/action-send-mail@v3  
+        with:  
+          server_address: smtp.gmail.com  
+          server_port: 587  
+          username: ${{ secrets.EMAIL_USER }}  
+          password: ${{ secrets.EMAIL_PASS }}  
+          subject: "Daily Report"  
+          body: "See attached output."  
+          to: "lars.l.timmer@gmail.com"  
+          from: "lars.l.timmer@gmail.com"  
+          attachments: output.txt  # Adjust if needed  
