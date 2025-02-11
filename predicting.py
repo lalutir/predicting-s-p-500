@@ -29,7 +29,7 @@ def print_increases(predicted, increase, lower_increase, upper_increase):
     print(f'The upper limit is €{prediction_upper}. This represents an increase of {upper_increase}%\n')
     
 def compare_predictions_to_actual(actual_df, predicted_df, timestamp, timestamp_historic, prediction_duration, prediction_file_path, error_file_path):
-    predicted = pd.read_csv(prediction_file_path)
+    predicted = pd.read_csv(f'Datasets/{prediction_file_path}')
     predicted['ds'] = pd.to_datetime(predicted['ds'])
     
     if predicted[predicted['ds'] == timestamp].empty:
