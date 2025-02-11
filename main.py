@@ -12,6 +12,9 @@ from predicting import *
 import warnings
 warnings.filterwarnings('ignore')
 
+import logging
+logging.getLogger("cmdstanpy").setLevel(logging.ERROR)
+
 
 ### LOADING API KEY
 #api_key = load_api_key()['API_KEY']
