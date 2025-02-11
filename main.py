@@ -13,7 +13,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 import logging
-logging.getLogger("cmdstanpy").setLevel(logging.CRTICAL)
+logging.getLogger("cmdstanpy").setLevel(logging.CRITICAL)
 
 
 ### LOADING API KEY
