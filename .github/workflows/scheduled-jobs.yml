@@ -18,7 +18,7 @@ jobs:
       - name: Set Up Python  
         uses: actions/setup-python@v5  
         with:  
-          python-version: '3.11'  
+          python-version: '3.11.1'  
 
       - name: Install Dependencies  
         run: |  
@@ -27,7 +27,8 @@ jobs:
       - name: Run Script and Generate Output with UTF-8 Encoding
         run: |
           cd Code
-          python main.py > output.txt
+          python main.py > output.txt 2>&1
+          cat output.txt
         env:
           API_KEY: ${{ secrets.API_KEY }}
 
@@ -43,11 +44,11 @@ jobs:
 
       - name: Read Output Content
         id: read_output
-        run: echo "OUTPUT_CONTENT<<EOF" >> $GITHUB_ENV && cat output.txt >> $GITHUB_ENV && echo "EOF" >> $GITHUB_ENV
+        run: echo "OUTPUT_CONTENT<<EOF" >> $GITHUB_ENV && cat Code/output.txt >> $GITHUB_ENV && echo "EOF" >> $GITHUB_ENV
 
       - name: Find Latest Visualization
         id: find_plot
-        run: echo "LATEST_PLOT=$(ls - t Code/Visualizations/Prediction_graph_*.png | head -1)" >> $GITHUB_ENV
+        run: echo "LATEST_PLOT=$(ls -t Code/Visualizations/Prediction_graph_*.png | head -1)" >> $GITHUB_ENV
 
       - name: Set Date
         id: set_date
@@ -73,4 +74,4 @@ jobs:
                 Automated Report System 🤖  
           from: "Automated Report System <${{ secrets.EMAIL }}>" 
           bcc: ${{ vars.EMAIL_BCC }}
-          attachments: output.txt, ${{ env.LATEST_PLOT }}  # Adjust if needed  
+          attachments: Code/output.txt, ${{ env.LATEST_PLOT }}  # Adjust if needed  
