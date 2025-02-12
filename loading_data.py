@@ -11,7 +11,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 def load_sp(file_path='Historical Prices Vanguard SP500.csv'):
     sp_prices = pd.read_csv(f'Datasets/{file_path}')
-    sp_prices['Date'] = pd.to_datetime(sp_prices['Date'])
+    sp_prices['Date'] = pd.to_datetime(sp_prices['Date'], format='mixed')
     
     yesterday = pd.to_datetime(datetime.today().date() - timedelta(days=1))
     
@@ -41,7 +41,7 @@ def update_df(df, file_path='Historical Prices Vanguard SP500.csv'):
     return df
 
 def transform(df):
-    df['Date'] = pd.to_datetime(df['Date'])
+    df['Date'] = pd.to_datetime(df['Date'], format='mixed')
     df = df[['Date', 'Market price (EUR)']]
     df = df.copy()
     df['Market price (EUR)'] = pd.to_numeric(df['Market price (EUR)'])
