@@ -42,7 +42,7 @@ jobs:
 
       - name: Read Output Content
         id: read_output
-        run: echo "OUTPUT_CONTENT=$(cat output.txt | base64)" >> $GITHUB_ENV
+        run: echo "OUTPUT_CONTENT<<EOF" >> $GITHUB_ENV && cat output.txt >> $GITHUB_ENV && echo "EOF" >> $GITHUB_ENV
 
       - name: Find Latest Visualization
         id: find_plot
@@ -62,7 +62,7 @@ jobs:
             Here is the daily report for **$(date +'%d-%m-%Y')**.
 
             **Summary of Predictions:**
-            $(base64 -d <<< ${{ env.OUTPUT_CONTENT }})
+            ${{ env.OUTPUT_CONTENT }}
 
             **Attachments:**
             - 📄 `output.txt` (Full output)
