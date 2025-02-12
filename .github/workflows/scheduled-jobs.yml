@@ -71,5 +71,5 @@ jobs:
                 Best,
                 Automated Report System 🤖  
           from: ${{ secrets.EMAIL }} 
-          bcc: ${{ variables.EMAIL_BCC }}
+          bcc: ${{ vars.EMAIL_BCC }}
           attachments: output.txt, ${{ env.LATEST_PLOT }}  # Adjust if needed  
