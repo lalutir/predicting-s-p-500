@@ -46,7 +46,7 @@ jobs:
 
       - name: Find Latest Visualization
         id: find_plot
-        run: echo "LATEST_PLOT=$(ls - t Visualizations/Prediction_graph_*.png | head -1)" >> $GITHUB_ENV
+        run: echo "LATEST_PLOT=$(ls - t Code/Visualizations/Prediction_graph_*.png | head -1)" >> $GITHUB_ENV
 
       - name: Set Date
         id: set_date
