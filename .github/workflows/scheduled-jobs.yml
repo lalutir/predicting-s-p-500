@@ -48,10 +48,6 @@ jobs:
         id: find_plot
         run: echo "LATEST_PLOT=$(ls - t Visualizations/Prediction_graph_*.png | head -1)" >> $GITHUB_ENV
 
-      - name: Format Email Subject
-        id: format_subject
-        run: echo "EMAIL_SUBJECT=📊 Daily Report Predictions for $(date + '%d-%m-%Y')" >> $GITHUB_ENV
-
       - name: Send Email with Attachment
         uses: dawidd6/action-send-mail@v3  
         with:  
@@ -59,28 +55,17 @@ jobs:
           server_port: 587  
           username: ${{ secrets.EMAIL_USER }}  
           password: ${{ secrets.EMAIL_PASS }}  
-          subject: "${{ env.EMAIL_SUBJECT }}"
-          content_type: text/html
+          subject: "📊 S&P500 Predictions Daily Report"
           body: |
-            <html>
-            <body style="font-family: Arial, sans-serif; color: #333;">
-              <h2>📊 Daily Report: Predictions for $(date +'%d-%m-%Y')</h2>
-                <p>Hello,</p>
-                <p>Here is the daily report for <strong>$(date +'%d-%m-%Y')</strong>.</p>
+                Hello, 
+                Here is the daily report for the S&P500 predictions for $(date +'%d-%m-%Y').
 
-              <h3>🔹 Summary of Predictions:</h3>
-              <pre style="background: #f4f4f4; padding: 10px; border-radius: 5px;">${{ env.OUTPUT_CONTENT }}</pre>
-
-              <h3>📎 Attachments:</h3>
-              <ul>
-                <li>📄 <strong>output.txt</strong> (Full output)</li>
-                <li>📈 <strong>Prediction Graph</strong> (Visualization)</li>
-              </ul>
+                📎 Attachments:
+                📄 output.txt (Full output)
+                📈 Prediction Graph (Visualization)
             
-              <p>Best,</p>
-              <p><strong>Automated Report System 🤖</strong></p>
-            </body>
-            </html> 
+                Best,
+                Automated Report System 🤖
           to: ${{ secrets.EMAIL }}  
           from: ${{ secrets.EMAIL }} 
           attachments: output.txt, ${{ env.LATEST_PLOT }}  # Adjust if needed  
