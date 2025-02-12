@@ -172,8 +172,8 @@ def print_increases(
 def compare_predictions_to_actual(
     actual_df: pd.DataFrame, 
     predicted_df: pd.DataFrame, 
-    timestamp: str, 
-    timestamp_historic: str, 
+    timestamp: pd.Timestamp, 
+    timestamp_historic: pd.Timestamp, 
     prediction_duration: str, 
     prediction_file_path: str, 
     error_file_path: str
@@ -205,9 +205,9 @@ def compare_predictions_to_actual(
     ValueError
         predicted_df must be a DataFrame
     ValueError
-        timestamp must be a string
+        timestamp must be a Timestamp
     ValueError
-        timestamp_historic must be a string
+        timestamp_historic must be a Timestamp
     ValueError
         prediction_duration must be a string
     ValueError
@@ -221,10 +221,10 @@ def compare_predictions_to_actual(
         raise ValueError("actual_df must be a DataFrame")
     if not isinstance(predicted_df, pd.DataFrame):
         raise ValueError("predicted_df must be a DataFrame")
-    if not isinstance(timestamp, str):
-        raise ValueError("timestamp must be a string")
-    if not isinstance(timestamp_historic, str):
-        raise ValueError("timestamp_historic must be a string")
+    if not isinstance(timestamp, pd.Timestamp):
+        raise ValueError("timestamp must be a Timestamp")
+    if not isinstance(timestamp_historic, pd.Timestamp):
+        raise ValueError("timestamp_historic must be a Timestamp")
     if not isinstance(prediction_duration, str):
         raise ValueError("prediction_duration must be a string")
     if not isinstance(prediction_file_path, str):

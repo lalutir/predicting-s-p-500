@@ -3,7 +3,7 @@ import pandas as pd
 from datetime import timedelta
 
 def historic_data(
-    timestamp: str, 
+    timestamp: pd.Timestamp, 
     df: pd.DataFrame, 
     time_period: str
     ):
@@ -22,7 +22,7 @@ def historic_data(
     Raises
     ------
     ValueError
-        timestamp must be a string
+        timestamp must be a Timestamp
     ValueError
         df must be a DataFrame
     ValueError
@@ -30,8 +30,8 @@ def historic_data(
     """    
     
     # Check if the input is correct if not, raise an error
-    if not isinstance(timestamp, str):
-        raise ValueError("timestamp must be a string")
+    if not isinstance(timestamp, pd.Timestamp):
+        raise ValueError("timestamp must be a Timestamp")
     if not isinstance(df, pd.DataFrame):
         raise ValueError("df must be a DataFrame")
     if not isinstance(time_period, str):
