@@ -46,6 +46,7 @@ sp_prices = load_sp()
 
 
 ### HISTORIC DATA
+print("\n\nHistoric data\n")
 historic_data(two_day_ago, sp_prices, 'one day')
 historic_data(one_week_ago, sp_prices, 'one week')
 historic_data(one_month_ago, sp_prices, 'one month')
@@ -73,6 +74,7 @@ forecast = modelling(sp_prices_merged, future_cols=future_cols, future_dfs=futur
 visualization(sp_prices, forecast)
 
 ### PREDICTIONS
+print("\n\nPredictions\n")
 prediction_today = forecast[forecast['ds'] == today]
 prediction_one_week = forecast[forecast['ds'] == one_week_ahead]
 prediction_two_week = forecast[forecast['ds'] == two_week_ahead]
@@ -105,6 +107,7 @@ print_increases(prediction_four_week, increase_four_week, lower_increase_four_we
 
 
 ### COMPARING PREDICTIONS TO ACTUAL VALUES
+print("\n\nErrors\n")
 compare_predictions_to_actual(sp_prices, prediction_today, today, yesterday, '1-day', 'Predicted closing values 1_day.csv', '1_day_error.csv')
 compare_predictions_to_actual(sp_prices, prediction_one_week, one_week_ahead, one_week_ago, '1-week', 'Predicted closing values 1_week.csv', '1_week_error.csv')
 compare_predictions_to_actual(sp_prices, prediction_two_week, two_week_ahead, two_week_ago, '2-week', 'Predicted closing values 2_week.csv', '2_week_error.csv')
