@@ -33,7 +33,7 @@ def update_df(df, file_path='Historical Prices Vanguard SP500.csv'):
     if new_date != first_row_date:
         new_row = pd.DataFrame([[new_date, new_price_usd, new_price_eur]], columns=df.columns)
         df = pd.concat([new_row, df], ignore_index=True)
-        df.to_csv(f'Datasets/{file_path}')
+        df.to_csv(f'Datasets/{file_path}', index=False)
         print('New data added!')
     else:
         print('No new data added!')
