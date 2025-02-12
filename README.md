@@ -91,10 +91,6 @@ Contributions are welcome! To get started:
 3. Make your changes (e.g., add new features, improve scripts, etc.).
 4. Create a pull request for review.
 
-### Code of Conduct
-
-Please follow the **Code of Conduct** when contributing to this project.
-
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
