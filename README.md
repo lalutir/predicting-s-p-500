@@ -24,6 +24,14 @@ Once the predictions are made, the system sends a **daily email report** contain
 
 The email is sent to a set of recipients, including a **mailing list** stored as a GitHub secret, with an easy way to **sign up** for the mailing list.
 
+## Sign Up for the Mailing List
+Stay updated on the latest predictions and reports! Sign up for the mailing list to receive daily emails with the S&P500 predictions, including the output and visualizations.
+
+[Sign Up for the Mailing List](https://docs.google.com/forms/d/e/1FAIpQLSdPx5574pl2MgkM1ipuvGwWduifqLDNS1vcLra0ConPeEtXPQ/viewform?usp=dialog)
+
+Once you sign up, you'll receive an email with daily reports on the S&P500 predictions.
+
+
 ## Features
 
 - **Daily Reports**: The system sends a daily email with the latest S&P500 predictions.
