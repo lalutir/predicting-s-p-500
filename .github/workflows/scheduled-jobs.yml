@@ -40,6 +40,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Read Output Content
+        id: read_output
+        run: echo "OUTPUT_CONTENT=$(cat output.txt | base64)" >> $GITHUB_ENV
+
       - name: Find Latest Visualization
         id: find_plot
         run: echo "LATEST_PLOT=$(ls - t Visualizations/Prediction_graph_*.png | head -1)" >> $GITHUB_ENV
@@ -51,8 +55,21 @@ jobs:
           server_port: 587  
           username: ${{ secrets.EMAIL_USER }}  
           password: ${{ secrets.EMAIL_PASS }}  
-          subject: "Daily Report"  
-          body: "See attached output."  
+          subject: "📊 Daily Report: Predictions for $(date +'%d-%m-%Y')"
+          body: |
+            Hello,
+
+            Here is the daily report for **$(date +'%d-%m-%Y')**.
+
+            **Summary of Predictions:**
+            $(base64 -d <<< ${{ env.OUTPUT_CONTENT }})
+
+            **Attachments:**
+            - 📄 `output.txt` (Full output)
+            - 📈 `Prediction Graph` (Visualization)
+
+            Best,  
+            Automated Report System 🤖  
           to: ${{ secrets.EMAIL }}  
           from: ${{ secrets.EMAIL }} 
           attachments: output.txt, ${{ env.LATEST_PLOT }}  # Adjust if needed  
