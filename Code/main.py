@@ -40,10 +40,8 @@ six_month_ago = today - timedelta(days=180)
 one_year_ago = today - timedelta(weeks=52)
 five_year_ago = today - timedelta(weeks=260)
 
-
 ### LOADING S&P500 DATA
 sp_prices = load_sp()
-
 
 ### HISTORIC DATA
 print("\n\nHistoric data\n")
