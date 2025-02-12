@@ -43,7 +43,7 @@ jobs:
 
       - name: Read Output Content
         id: read_output
-        run: echo "OUTPUT_CONTENT<<EOF" >> $GITHUB_ENV && cat output.txt >> $GITHUB_ENV && echo "EOF" >> $GITHUB_ENV
+        run: echo "OUTPUT_CONTENT<<EOF" >> $GITHUB_ENV && cat Code/output.txt >> $GITHUB_ENV && echo "EOF" >> $GITHUB_ENV
 
       - name: Find Latest Visualization
         id: find_plot
