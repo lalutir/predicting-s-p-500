@@ -11,7 +11,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 def load_sp(file_path='Historical Prices Vanguard SP500.csv'):
     sp_prices = pd.read_csv(f'Datasets/{file_path}')
-    sp_prices['Date'] = pd.to_datetime(sp_prices['Date'].astype(str))
+    sp_prices['Date'] = pd.to_datetime(sp_prices['Date'].astype(str), exact=False)
     
     yesterday = pd.to_datetime(datetime.today().date() - timedelta(days=1))
     
