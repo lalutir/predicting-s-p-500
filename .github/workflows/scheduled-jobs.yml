@@ -18,7 +18,7 @@ jobs:
       - name: Set Up Python  
         uses: actions/setup-python@v5  
         with:  
-          python-version: '3.11'  
+          python-version: '3.11.1'  
 
       - name: Install Dependencies  
         run: |  
@@ -27,7 +27,8 @@ jobs:
       - name: Run Script and Generate Output with UTF-8 Encoding
         run: |
           cd Code
-          python main.py > output.txt
+          python main.py > output.txt 2>&1
+          cat output.txt
         env:
           API_KEY: ${{ secrets.API_KEY }}
 
