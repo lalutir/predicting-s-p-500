@@ -69,7 +69,7 @@ jobs:
                 📈 Prediction Graph (Visualization)
             
                 Best,
-                Automated Report System 🤖
-          to: ${{ secrets.EMAIL }}  
+                Automated Report System 🤖  
           from: ${{ secrets.EMAIL }} 
+          bcc: ${{ variables.EMAIL_BCC }}
           attachments: output.txt, ${{ env.LATEST_PLOT }}  # Adjust if needed  
