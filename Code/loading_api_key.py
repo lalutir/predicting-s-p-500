@@ -1,6 +1,6 @@
 import os
 
-def load_api_key():
+def load_api_key() -> dict:
     """
     Load the API key from a file or ask the user to input it
 
@@ -24,7 +24,7 @@ def load_api_key():
             keys[key] = value
         return keys
 
-def load_api_key_github_actions():
+def load_api_key_github_actions() -> str:
     """
     Load the API key from the environment
 
