@@ -26,7 +26,7 @@ jobs:
 
       - name: Run Script and Generate Output with UTF-8 Encoding
         run: |
-          python -c "import sys; sys.stdout.reconfigure(encoding='utf-8'); exec(open('main.py').read())" > output.txt
+          python main.py > output.txt
         env:
           API_KEY: ${{ secrets.API_KEY }}
 
@@ -40,15 +40,36 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Send Email  
+      - name: Read Output Content
+        id: read_output
+        run: echo "OUTPUT_CONTENT<<EOF" >> $GITHUB_ENV && cat output.txt >> $GITHUB_ENV && echo "EOF" >> $GITHUB_ENV
+
+      - name: Find Latest Visualization
+        id: find_plot
+        run: echo "LATEST_PLOT=$(ls - t Visualizations/Prediction_graph_*.png | head -1)" >> $GITHUB_ENV
+
+      - name: Set Date
+        id: set_date
+        run: echo "CURRENT_DATE=$(date +'%d-%m-%Y')" >> $GITHUB_ENV
+
+      - name: Send Email with Attachment
         uses: dawidd6/action-send-mail@v3  
         with:  
           server_address: smtp.gmail.com  
           server_port: 587  
           username: ${{ secrets.EMAIL_USER }}  
           password: ${{ secrets.EMAIL_PASS }}  
-          subject: "Daily Report"  
-          body: "See attached output."  
+          subject: "📊 S&P500 Predictions Daily Report: ${{ env.CURRENT_DATE }}"
+          body: |
+                Hello, 
+                Here is the daily report for the S&P500 predictions for ${{ env.CURRENT_DATE }}.
+
+                📎 Attachments:
+                📄 output.txt (Full output)
+                📈 Prediction Graph (Visualization)
+            
+                Best,
+                Automated Report System 🤖
           to: ${{ secrets.EMAIL }}  
           from: ${{ secrets.EMAIL }} 
-          attachments: output.txt  # Adjust if needed  
+          attachments: output.txt, ${{ env.LATEST_PLOT }}  # Adjust if needed  
