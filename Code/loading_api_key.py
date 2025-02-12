@@ -1,6 +1,15 @@
 import os
 
 def load_api_key():
+    """
+    Load the API key from a file or ask the user to input it
+
+    Returns
+    -------
+    dict
+        Dictionary with the API key
+    """    
+    # Check if the file exists, if not ask the user to input the API key
     keys = {}
     if os.path.exists('personal_key.txt'):
         pass
@@ -16,4 +25,13 @@ def load_api_key():
         return keys
 
 def load_api_key_github_actions():
+    """
+    Load the API key from the environment
+
+    Returns
+    -------
+    str
+        API key
+    """    
+    
     return os.getenv("API_KEY")
