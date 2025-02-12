@@ -21,28 +21,7 @@ logging.getLogger("cmdstanpy").setLevel(logging.CRITICAL)
 api_key = load_api_key_github_actions()
 
 
-### LOADING S&P500 DATA
-sp_prices = load_sp()
-
-
-### FEATURE ENGINEERING
-aapl_future, aapl = load_stock_data('AAPL', 'aapl', api_key)
-nvda_future, nvda = load_stock_data('NVDA', 'nvda', api_key)
-tsla_future, tsla = load_stock_data('TSLA', 'tsla', api_key)
-
-df_to_merge = [aapl, nvda, tsla]
-sp_prices_merged = merge_sp_features(sp_prices, df_to_merge)
-
-
-### MODELLING
-future_cols = ['day_of_week', 'month', 'aapl', 'nvda', 'tsla']
-future_dfs = [aapl_future, nvda_future, tsla_future]
-forecast = modelling(sp_prices_merged, future_cols=future_cols, future_dfs=future_dfs)
-
-### VISUALIZING
-visualization(sp_prices, forecast)
-
-### PREDICTIONS
+### TIME VARIABLES
 today = pd.Timestamp.today().normalize()
 one_week_ahead = today + timedelta(weeks=1)
 two_week_ahead = today + timedelta(weeks=2)
@@ -55,6 +34,29 @@ two_week_ago = today - timedelta(weeks=2)
 three_week_ago = today - timedelta(weeks=3)
 four_week_ago = today - timedelta(weeks=4)
 
+
+### LOADING S&P500 DATA
+sp_prices = load_sp()
+
+
+### FEATURE ENGINEERING
+aapl_future, aapl = load_stock_data('AAPL', 'aapl', api_key, periods=36)
+nvda_future, nvda = load_stock_data('NVDA', 'nvda', api_key, periods=36)
+tsla_future, tsla = load_stock_data('TSLA', 'tsla', api_key, periods=36)
+
+df_to_merge = [aapl, nvda, tsla]
+sp_prices_merged = merge_sp_features(sp_prices, df_to_merge)
+
+
+### MODELLING
+future_cols = ['day_of_week', 'month', 'aapl', 'nvda', 'tsla']
+future_dfs = [aapl_future, nvda_future, tsla_future]
+forecast = modelling(sp_prices_merged, future_cols=future_cols, future_dfs=future_dfs, periods=36)
+
+### VISUALIZING
+visualization(sp_prices, forecast)
+
+### PREDICTIONS
 prediction_today = forecast[forecast['ds'] == today]
 prediction_one_week = forecast[forecast['ds'] == one_week_ahead]
 prediction_two_week = forecast[forecast['ds'] == two_week_ahead]
