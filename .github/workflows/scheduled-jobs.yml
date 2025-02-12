@@ -27,7 +27,7 @@ jobs:
       - name: Run Script and Generate Output with UTF-8 Encoding
         run: |
           cd Code
-          python Code/main.py > output.txt
+          python main.py > output.txt
         env:
           API_KEY: ${{ secrets.API_KEY }}
 
