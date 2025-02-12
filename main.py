@@ -4,6 +4,7 @@ import pandas as pd
 from datetime import timedelta
 from loading_api_key import *
 from loading_data import *
+from historic import *
 from feature_engineering import *
 from modelling import *
 from visualizing import *
@@ -29,14 +30,29 @@ three_week_ahead = today + timedelta(weeks=3)
 four_week_ahead = today + timedelta(weeks=4)
 
 yesterday = today - timedelta(days=1)
+two_day_ago = today - timedelta(days=2)
 one_week_ago = today - timedelta(weeks=1)
 two_week_ago = today - timedelta(weeks=2)
 three_week_ago = today - timedelta(weeks=3)
 four_week_ago = today - timedelta(weeks=4)
+one_month_ago = today - timedelta(days=30)
+six_month_ago = today - timedelta(days=180)
+one_year_ago = today - timedelta(weeks=52)
+five_year_ago = today - timedelta(weeks=260)
 
 
 ### LOADING S&P500 DATA
 sp_prices = load_sp()
+
+
+### HISTORIC DATA
+historic_data(two_day_ago, sp_prices, 'one day')
+historic_data(one_week_ago, sp_prices, 'one week')
+historic_data(one_month_ago, sp_prices, 'one month')
+historic_data(six_month_ago, sp_prices, 'six months')
+historic_data(one_year_ago, sp_prices, 'one year')
+historic_data(five_year_ago, sp_prices, 'five years')
+historic_data(sp_prices['ds'].min(), sp_prices, 'all time')
 
 
 ### FEATURE ENGINEERING
