@@ -18,8 +18,8 @@ logging.getLogger("cmdstanpy").setLevel(logging.CRITICAL)
 
 
 ### LOADING API KEY
-#api_key = load_api_key()['API_KEY']
-api_key = load_api_key_github_actions()
+api_key = load_api_key()['API_KEY']
+#api_key = load_api_key_github_actions()
 
 
 ### TIME VARIABLES
