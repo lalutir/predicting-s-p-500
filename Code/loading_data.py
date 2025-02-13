@@ -47,6 +47,7 @@ def load_sp(
 
     # Transform the data
     sp_prices = transform(sp_prices)
+    sp_prices.to_csv(f'Datasets/{file_path}', index=False) 
     
     return sp_prices
     
