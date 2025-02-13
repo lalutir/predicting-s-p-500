@@ -24,13 +24,23 @@ jobs:
         run: |
           pip install -r requirements.txt
 
+      - name: Check Code Folder
+        run: |
+          if [ ! -d "Code" ]; then
+            echo "Error: Code directory does not exist!"
+            exit 1
+          fi
+
       - name: Run Script and Generate Output with UTF-8 Encoding
         run: |
-          cd Code
-          python main.py > output.txt 2>&1 || { echo 'Python script failed'; exit 1; }
-          cat output.txt
+          cd Code || exit 1
+          python main.py > output.txt 2>&1 || (cat output.txt && exit 1)
+          cat output.txt 
         env:
           API_KEY: ${{ secrets.API_KEY }}
+
+      - name: Debug API key
+        run: env | grep API_KEY
 
       - name: Commit File Changes
         run: |
