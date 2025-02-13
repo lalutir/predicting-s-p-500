@@ -41,6 +41,32 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pip-
 
+      - name: Pull File Changes
+        run: |
+          git config --global user.name 'lalutir'
+          git config --global user.email ${{ secrets.EMAIL_COMMIT }}
+          git pull origin main --rebase
+
+
+      - name: Set Up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.1'
+
+      - name: Create and Activate Virtual Environment
+        run: |
+          python -m venv ~/.venv
+          source ~/.venv/bin/activate
+          pip install --upgrade pip
+
+      - name: Cache Python dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Install Dependencies
         run: |
           source ~/.venv/bin/activate
@@ -55,18 +81,18 @@ jobs:
         env:
           API_KEY: ${{ secrets.API_KEY }}
 
-      - name: Commit File Changes
+      - name: Commit and Push File Changes (if any)
         run: |
-          git config --global user.name 'lalutir'
-          git config --global user.email ${{ secrets.EMAIL_COMMIT }}
-          git stash
-          git pull origin main --rebase
           git add .
-          git commit -m 'commit modified files after automatic run'
-          git push origin main
+          if ! git diff --cached --quiet; then
+            git commit -m 'commit modified files after automatic run'
+            git push origin main
+          else
+            echo "No changes to commit."
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+  
       - name: Read Output Content
         id: read_output
         run: echo "OUTPUT_CONTENT<<EOF" >> $GITHUB_ENV && cat Code/output.txt >> $GITHUB_ENV && echo "EOF" >> $GITHUB_ENV
