@@ -47,7 +47,6 @@ def load_sp(
 
     # Transform the data
     sp_prices = transform(sp_prices)
-    sp_prices.to_csv(f'Datasets/{file_path}', index=False) 
     
     return sp_prices
     
@@ -92,6 +91,8 @@ def update_df(
     # Update the data
     new_date, new_price_usd, new_price_eur = new_data
     first_row_date = df.iloc[0, 0] 
+    
+    new_date = pd.to_datetime(new_date, format='%d %b %Y')
     
     if new_date != first_row_date:
         new_row = pd.DataFrame([[new_date, new_price_usd, new_price_eur]], columns=df.columns)
