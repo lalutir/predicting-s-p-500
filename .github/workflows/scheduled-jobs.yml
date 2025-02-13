@@ -1,33 +1,33 @@
-name: Run main.py Daily  
+name: Run main.py Daily
 
-on:  
-  schedule:  
-    - cron: '0 6 * * *'  # Runs at 06:00 UTC (08:00 CEST)  
-  workflow_dispatch:  # Allows manual execution  
+on:
+  schedule:
+    - cron: '0 6 * * *'  # Runs at 06:00 UTC (08:00 CEST)
+  workflow_dispatch:  # Allows manual execution
 
 permissions:
   contents: write
 
-jobs:  
-  run-script:  
-    runs-on: ubuntu-latest  
-    steps:  
-      - name: Checkout Repository  
-        uses: actions/checkout@v4  
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-      - name: Set Up Python  
-        uses: actions/setup-python@v5  
-        with:  
-          python-version: '3.11.1'  
+      - name: Set Up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11.1'
 
-      - name: Install Dependencies  
-        run: |  
-          pip install -r requirements.txt  
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
 
       - name: Run Script and Generate Output with UTF-8 Encoding
         run: |
           cd Code
-          python main.py > output.txt 2>&1
+          python main.py > output.txt 2>&1 || { echo 'Python script failed'; exit 1; }
           cat output.txt
         env:
           API_KEY: ${{ secrets.API_KEY }}
@@ -57,12 +57,12 @@ jobs:
         run: echo "CURRENT_DATE=$(date +'%d-%m-%Y')" >> $GITHUB_ENV
 
       - name: Send Email with Attachment
-        uses: dawidd6/action-send-mail@v3  
-        with:  
-          server_address: smtp.gmail.com  
-          server_port: 587  
-          username: ${{ secrets.EMAIL }}  
-          password: ${{ secrets.EMAIL_PASS }}  
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL }}
+          password: ${{ secrets.EMAIL_PASS }}
           subject: "📊 S&P500 Predictions Daily Report: ${{ env.CURRENT_DATE }}"
           body: |
                 Hello, 
@@ -71,9 +71,9 @@ jobs:
                 📎 Attachments:
                 📄 output.txt (Full output)
                 📈 Prediction Graph (Visualization)
-            
+                
                 Best,
-                Automated Report System 🤖  
-          from: "Automated Report System <${{ secrets.EMAIL }}>" 
+                Automated Report System 🤖
+          from: "Automated Report System <${{ secrets.EMAIL }}>"
           bcc: ${{ vars.EMAIL_BCC }}
-          attachments: Code/output.txt, ${{ env.LATEST_PLOT }}  # Adjust if needed  
+          attachments: Code/output.txt, ${{ env.LATEST_PLOT }}
