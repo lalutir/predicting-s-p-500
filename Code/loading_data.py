@@ -39,11 +39,7 @@ def load_sp(
     sp_prices = pd.read_csv(f'Datasets/{file_path}')
     sp_prices['Date'] = pd.to_datetime(sp_prices['Date'].astype(str), exact=False)
     
-    # Check if the data is up to date, if not, update it
-    yesterday = pd.to_datetime(datetime.today().date() - timedelta(days=1))
-    
-    if sp_prices[sp_prices['Date'] == yesterday].empty:
-        sp_prices = update_df(sp_prices, file_path=file_path)      
+    sp_prices = update_df(sp_prices, file_path=file_path)      
 
     # Transform the data
     sp_prices = transform(sp_prices)
@@ -89,15 +85,12 @@ def update_df(
         return df
     
     # Update the data
-    new_date, new_price_usd, new_price_eur = new_data
+    new_date, new_price_eur = new_data
     first_row_date = df.iloc[0, 0] 
     
-    new_date = pd.to_datetime(new_date, format='%d %b %Y')
-    
     if new_date != first_row_date:
-        new_row = pd.DataFrame([[new_date, new_price_usd, new_price_eur]], columns=df.columns)
-        df = pd.concat([new_row, df], ignore_index=True)
-        df.to_csv(f'Datasets/{file_path}', index=False)        
+        new_row = pd.DataFrame([[new_date, new_price_eur]], columns=df.columns)
+        df = pd.concat([new_row, df], ignore_index=True)        
         
     return df
 
@@ -128,7 +121,7 @@ def transform(
         raise ValueError("df must be a DataFrame")
     
     # Transform the data
-    df['Date'] = pd.to_datetime(df['Date'], format='mixed')
+    df['Date'] = pd.to_datetime(df['Date'])
     df = df[['Date', 'Market price (EUR)']]
     df = df.copy()
     df['Market price (EUR)'] = pd.to_numeric(df['Market price (EUR)'])
@@ -143,11 +136,8 @@ def transform(
     df = df.rename(columns={'Date': 'ds', 'Market price (EUR)':'y'})
     
     # Add timeseries features
-    df['day'] = df['ds'].dt.day
-    df['day_of_week'] = df['ds'].dt.dayofweek
-    df['week'] = df['ds'].dt.isocalendar().week
+    df['day_of_week'] = df['ds'].dt.day_of_week
     df['month'] = df['ds'].dt.month
-    df['year'] = df['ds'].dt.year
     
     return df
 
@@ -193,10 +183,9 @@ def scrape() -> tuple:
             return None
         
         date = cells[0].text.strip()
-        price_usd = cells[1].text.strip().replace('$', '')
         price_eur = cells[2].text.strip().replace('€', '')
     
-        return date, price_usd, price_eur
+        return date, price_eur
     
     except Exception as e:
         print(f"Error: {e}")
