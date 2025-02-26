@@ -124,5 +124,5 @@ jobs:
                 Best,
                 Automated Report System 🤖
           from: "Automated Report System <${{ secrets.EMAIL }}>"
-          bcc: ${{ vars.EMAIL }}
+          bcc: ${{ secrets.EMAIL }}
           attachments: Code/output.txt, ${{ env.LATEST_PLOT }}
