@@ -37,9 +37,9 @@ def load_sp(
     
     # Load the data
     sp_prices = pd.read_csv(f'Datasets/{file_path}')
-    sp_prices['Date'] = pd.to_datetime(sp_prices['Date'].astype(str), exact=False)
     
-    sp_prices = update_df(sp_prices, file_path=file_path)      
+    sp_prices = update_df(sp_prices, file_path=file_path)   
+    sp_prices.to_csv(f'Datasets/{file_path}', index=False)
 
     # Transform the data
     sp_prices = transform(sp_prices)
