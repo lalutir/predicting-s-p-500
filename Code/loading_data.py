@@ -1,4 +1,5 @@
 import pandas as pd
+import requests
 
 from datetime import datetime, timedelta
 from selenium import webdriver
@@ -10,6 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
 def load_sp(
+    api_key: str,
     file_path: str = 'Historical Prices Vanguard SP500.csv'
     ) -> pd.DataFrame:
     """
@@ -17,6 +19,8 @@ def load_sp(
 
     Parameters
     ----------
+    api_key : str
+        API key for Alpha Vantage
     file_path : str, optional
         The file to load, by default 'Historical Prices Vanguard SP500.csv'
 
@@ -38,7 +42,7 @@ def load_sp(
     # Load the data
     sp_prices = pd.read_csv(f'Datasets/{file_path}')
     
-    sp_prices = update_df(sp_prices, file_path=file_path)   
+    sp_prices = update_df(sp_prices, api_key, file_path=file_path)   
     sp_prices.to_csv(f'Datasets/{file_path}', index=False)
 
     # Transform the data
@@ -48,6 +52,7 @@ def load_sp(
     
 def update_df(
     df: pd.DataFrame, 
+    api_key: str,
     file_path: str = 'Historical Prices Vanguard SP500.csv'
     ) -> pd.DataFrame:
     """
@@ -57,6 +62,8 @@ def update_df(
     ----------
     df : pd.DataFrame
         DataFrame with the historical prices of the Vanguard
+    api_key : str
+        API key for Alpha Vantage
     file_path : str, optional
         The path to write the file to, by default 'Historical Prices Vanguard SP500.csv'
 
@@ -80,7 +87,7 @@ def update_df(
         raise ValueError("file_path must be a string")
     
     # Scrape the data
-    new_data = scrape()
+    new_data = scrape(api_key)
     if not new_data:
         return df
     
@@ -141,10 +148,17 @@ def transform(
     
     return df
 
-def scrape() -> tuple:
+def scrape(
+    api_key: str
+    ) -> tuple:
     """
     Scrape the historical prices of the Vanguard SP500 ETF
 
+    Parameters
+    ----------
+    api_key : str
+        API key for Alpha Vantage
+    
     Returns
     -------
     tuple
@@ -184,6 +198,14 @@ def scrape() -> tuple:
         
         date = cells[0].text.strip()
         price_eur = cells[2].text.strip().replace('€', '')
+        if price_eur == "—":
+            price_usd = float(cells[1].text.strip().replace('$', ''))
+            url = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=usdeur&outputsize=full&apikey={api_key}'
+            r = requests.get(url)
+            data = r.json()
+            df = pd.DataFrame(data['Time Series (Daily)']).T.reset_index().rename(columns={'index': 'Date'})
+            conversion = df['4. close'][0]
+            price_eur = price_usd * float(conversion)
     
         return date, price_eur
     
