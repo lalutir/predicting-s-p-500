@@ -254,7 +254,7 @@ def compare_predictions_to_actual(
             if not actual_df[actual_df['ds'] == timestamp_historic].empty:
                 y_pred = (predicted[predicted['ds'] == timestamp_historic]['y_pred'].values)[0]
                 y_true = (actual_df[actual_df['ds'] == timestamp_historic]['y'].values)[0]
-                error = round(y_pred - y_true, 2)
+                error = abs(round(y_pred - y_true, 2))
                 perc_error = round(error / y_true, 2)
                 accuracy_new = pd.DataFrame({'ds': [timestamp_historic], 'y_pred': [y_pred], 'y_true': [y_true], 'error': [error], 'perc_error': [perc_error]})
                 accuracy_new = pd.concat([accuracy, accuracy_new], ignore_index=True)
